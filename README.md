@@ -9,12 +9,17 @@ JDBC-first implementation of the Ether database contracts using only the Java st
 - Parameter binding for scalar, null and SQL array values
 - Transaction handling without external frameworks
 
+## Notes
+
+- `ether-jdbc` is the reference implementation for the contracts in `ether-database-core`.
+- Pooling is intentionally not mandatory here. External pooling, if needed later, should stay optional.
+
 ## Maven
 
 ```xml
 <dependency>
   <groupId>dev.rafex.ether.jdbc</groupId>
   <artifactId>ether-jdbc</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>8.0.0-SNAPSHOT</version>
 </dependency>
 ```
