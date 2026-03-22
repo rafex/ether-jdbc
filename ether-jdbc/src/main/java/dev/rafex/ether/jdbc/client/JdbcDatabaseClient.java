@@ -137,12 +137,10 @@ public final class JdbcDatabaseClient implements DatabaseClient {
     }
 
     private static RuntimeException wrap(final String message, final Exception exception) {
-        if (exception instanceof RuntimeException runtimeException) {
-            return runtimeException;
-        }
-        if (exception instanceof SQLException sqlException) {
-            return new DatabaseAccessException(message, sqlException);
-        }
-        return new DatabaseAccessException(message, exception);
+        return switch (exception) {
+            case RuntimeException re -> re;
+            case SQLException se     -> new DatabaseAccessException(message, se);
+            default                  -> new DatabaseAccessException(message, exception);
+        };
     }
 }
