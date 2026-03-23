@@ -70,7 +70,8 @@ public final class JdbcDatabaseClient implements DatabaseClient {
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(query.sql())) {
             bind(statement, connection, query.parameters());
-            return statement.executeUpdate();
+            statement.execute();
+            return statement.getUpdateCount();
         } catch (SQLException e) {
             throw new DatabaseAccessException("Execute failed", e);
         }
