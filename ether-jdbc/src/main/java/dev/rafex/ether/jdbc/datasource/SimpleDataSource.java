@@ -11,6 +11,12 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
+/**
+ * A simple implementation of {@link DataSource} that uses {@link DriverManager} to create connections.
+ *
+ * <p>This implementation is suitable for applications that need a straightforward way to obtain
+ * database connections without complex connection pooling.</p>
+ */
 public final class SimpleDataSource implements DataSource {
 
     private final String url;
@@ -18,14 +24,35 @@ public final class SimpleDataSource implements DataSource {
     private volatile PrintWriter logWriter;
     private volatile int loginTimeout;
 
+    /**
+     * Creates a new {@code SimpleDataSource} with the specified JDBC URL.
+     *
+     * @param url the JDBC URL of the database
+     * @throws NullPointerException if {@code url} is {@code null}
+     */
     public SimpleDataSource(final String url) {
         this(url, new Properties());
     }
 
+    /**
+     * Creates a new {@code SimpleDataSource} with the specified JDBC URL, username, and password.
+     *
+     * @param url      the JDBC URL of the database
+     * @param username the database username
+     * @param password the database password
+     * @throws NullPointerException if {@code url} is {@code null}
+     */
     public SimpleDataSource(final String url, final String username, final String password) {
         this(url, toProperties(username, password));
     }
 
+    /**
+     * Creates a new {@code SimpleDataSource} with the specified JDBC URL and properties.
+     *
+     * @param url        the JDBC URL of the database
+     * @param properties the connection properties
+     * @throws NullPointerException if {@code url} is {@code null}
+     */
     public SimpleDataSource(final String url, final Properties properties) {
         this.url = Objects.requireNonNull(url, "url");
         this.properties = new Properties();
@@ -34,6 +61,12 @@ public final class SimpleDataSource implements DataSource {
         }
     }
 
+    /**
+     * Retrieves a database connection using the configured URL and properties.
+     *
+     * @return a database connection
+     * @throws SQLException if a database access error occurs
+     */
     @Override
     public Connection getConnection() throws SQLException {
         DriverManager.setLoginTimeout(loginTimeout);
@@ -43,6 +76,14 @@ public final class SimpleDataSource implements DataSource {
         return DriverManager.getConnection(url, properties);
     }
 
+    /**
+     * Retrieves a database connection using the specified username and password.
+     *
+     * @param username the database username
+     * @param password the database password
+     * @return a database connection
+     * @throws SQLException if a database access error occurs
+     */
     @Override
     public Connection getConnection(final String username, final String password) throws SQLException {
         return DriverManager.getConnection(url, username, password);
@@ -68,6 +109,12 @@ public final class SimpleDataSource implements DataSource {
         return loginTimeout;
     }
 
+    /**
+     * Not supported by this implementation.
+     *
+     * @return nothing, always throws an exception
+     * @throws SQLFeatureNotSupportedException always
+     */
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         throw new SQLFeatureNotSupportedException("Parent logger is not supported");
