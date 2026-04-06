@@ -143,6 +143,8 @@ class JdbcDatabaseClientTest {
                 return switch (method.getName()) {
                 case "executeQuery" -> resultSet;
                 case "executeUpdate" -> updateCount;
+                case "execute" -> false;
+                case "getUpdateCount" -> updateCount;
                 case "addBatch" -> {
                     batchCount++;
                     yield null;
