@@ -64,3 +64,5 @@ logs/
 *.swp
 *.swo
 *~
+# flatten-maven-plugin
+.flattened-pom.xml
